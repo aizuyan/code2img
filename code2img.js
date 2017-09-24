@@ -58,7 +58,6 @@ function parseArgs() {
   }
   if ("" == language) {
     language = path.extname(filePath).replace(/(^\.|\.$)/g,"");
-    console.log(language);
   }
 }
 
@@ -95,7 +94,7 @@ var handle = async function(){
   });
 
   await page.screenshot({
-    path: 'www.png',
+    path: 'tmp.png',
     fullPage: true
   });  
   browser.close();
