@@ -232,3 +232,6 @@ class Image2Ascii
 
 转化之后的图片
 ![转化之后的图片](./assets/example-php.png)
+
+shell脚本转化之后：
+~[](./assets/example-sh.png)
