@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <style type="text/css">
+            {{{cssCode}}}
+        	* {
+        		margin: 0;
+        		padding: 0;
+        	}
+        	code {
+        		font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",  "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace; 
+        		font-size: x-large;
+                padding: 2em 1.5em !important;
+        	}
+        </style>
+    </head>
+  <body>
+  	<div class="code-wrap">
+        <pre><code class="{{{language}}}">{{code}}</code></pre>
+	</div>
+    <script type="text/javascript">
+        {{{scriptCode}}}
+    </script>
+  </body>
+</html>

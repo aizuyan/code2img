@@ -1,0 +1,110 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const path = require("path");
+const Mustache=require('mustache');
+const puppeteer = require('puppeteer');
+
+const argv = require('yargs')
+  .default({
+    file: "",
+    style: "default",
+    language: ""
+  })
+  .argv;
+
+var fsExistsSync = function(path) {
+  try{
+      fs.accessSync(path, fs.F_OK);
+  }catch(e){
+      return false;
+  }
+  return true;
+}
+
+var readFilePromise = function (fileName){
+  return new Promise(function (resolve, reject){
+    fs.readFile(fileName, function(error, data){
+      if (error) reject(error);
+      resolve(data.toString());
+    });
+  });
+};
+
+
+function parseArgs() {
+  let file = argv.file;
+  if ("string" != typeof(file)) {
+    file = "";
+  }
+  filePath = path.resolve(file);
+  if (false == fsExistsSync(filePath)) {
+    throw new Error("代码文件[" + filePath + "]不存在");
+  }
+
+  let style = argv.style;
+  if ("string" != typeof(style)) {
+    style = "";
+  }
+  stylePath = __dirname + "/node_modules/highlight.js/styles/" + style + ".css";
+
+  if (false == fsExistsSync(stylePath)) {
+    throw new Error("主题[" + style + "]的文件[" + stylePath + "]不存在");
+  }
+
+  language = argv.language;
+  if ("string" != typeof(language)) {
+    language = "";
+  }
+  if ("" == language) {
+    language = path.extname(filePath).replace(/(^\.|\.$)/g,"");
+    console.log(language);
+  }
+}
+
+var handle = async function(){
+  // 模板
+  const template = await readFilePromise(__dirname + "/src/mst/default.mst");
+  // 拼装代码
+  var codeStr = await readFilePromise(filePath);
+  // 拼装js
+  const scriptCodeStr = await readFilePromise(__dirname + "/tmp/build/default.js");
+  // 拼装css
+  const cssCodeStr = await readFilePromise(stylePath);
+  var html = Mustache.render(template, {
+    "code": codeStr,
+    "scriptCode": scriptCodeStr,
+    "cssCode": cssCodeStr,
+    "language": language
+  });
+
+  // 初始化浏览器
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();  
+  await page.setContent(html);
+  const lenObj = await page.evaluate(() => {
+    var obj = {
+      "width": $("code").outerWidth(),
+      "height": $("code").height()
+    };
+    return Promise.resolve(obj);
+  });
+  page.setViewport({
+    width: lenObj.width,
+    height: lenObj.height
+  });
+
+  await page.screenshot({
+    path: 'www.png',
+    fullPage: true
+  });  
+  browser.close();
+};
+
+var filePath = "",
+  stylePath = "",
+  language = "";
+
+parseArgs();
+
+handle();
