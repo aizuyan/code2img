@@ -81,10 +81,14 @@ var handle = async function(){
   const browser = await puppeteer.launch();
   const page = await browser.newPage();  
   await page.setContent(html);
+  await page.waitForNavigation({
+    waitUntil: 'load',
+  });
   const lenObj = await page.evaluate(() => {
+    let showCodeObj = document.getElementById("show_code");
     var obj = {
-      "width": $("code").outerWidth(),
-      "height": $("code").height()
+      "width": showCodeObj.scrollWidth,
+      "height": showCodeObj.scrollHeight
     };
     return Promise.resolve(obj);
   });

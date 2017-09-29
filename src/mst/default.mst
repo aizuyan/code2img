@@ -16,7 +16,7 @@
     </head>
   <body>
   	<div class="code-wrap">
-        <pre><code class="{{{language}}}">{{code}}</code></pre>
+        <pre><code id="show_code" class="{{{language}}}">{{code}}</code></pre>
 	</div>
     <script type="text/javascript">
         {{{scriptCode}}}
