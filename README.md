@@ -31,7 +31,7 @@ chmod +x code2img
 
 #### 例子
 ```
-./code2img/code2img --file=img2ascii/src/Image2Ascii.php --style=github
+./code2img --file=img2ascii/src/Image2Ascii.php --style=github
 ```
 原始代码
 ```php
@@ -233,5 +233,10 @@ class Image2Ascii
 转化之后的图片
 ![转化之后的图片](./assets/example-php.png)
 
+```
+./code2img --file=img2ascii/src/Image2Ascii.php --style=solarized-light
+```
+![转化之后的图片](./assets/example-php-solarized.png)
+
 shell脚本转化之后：
-~[](./assets/example-sh.png)
+![](./assets/example-sh.png)
